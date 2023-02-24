@@ -1,0 +1,8 @@
+file_format: "1"
+id: ergodox
+name: Ergodox
+type: shield
+url: https://github.com/tahnok/teensy2nicenano
+requires: [pro_micro]
+features:
+  - keys

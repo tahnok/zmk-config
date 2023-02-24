@@ -1,0 +1,18 @@
+# Copyright (c) 2023 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if SHIELD_ERGODOX
+
+config ZMK_KEYBOARD_NAME
+    default "Ergodox"
+
+config ZMK_USB
+    default y
+
+config I2C
+	default y
+
+config ZMK_KSCAN_MATRIX_POLLING
+    default y
+
+endif
