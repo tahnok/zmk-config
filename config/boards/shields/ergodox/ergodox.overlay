@@ -32,6 +32,7 @@
 		label = "KSCAN_RIGHT";
 
 		diode-direction = "row2col";
+        poll-period-ms = <5>;
 
 		col-gpios
 		= <&pro_micro 1 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
@@ -57,6 +58,7 @@
 		label = "KSCAN_LEFT";
 
 		diode-direction = "col2row";
+        poll-period-ms = <5>;
 
 		col-gpios
 		= <&left_io 0 (GPIO_ACTIVE_LOW)>
