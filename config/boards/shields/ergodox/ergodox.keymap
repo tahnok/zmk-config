@@ -28,6 +28,16 @@
             global-quick-tap;
             bindings = <&kp>, <&kp>;
         };
+        mlt: my_layer_tap {
+            compatible = "zmk,behavior-hold-tap";
+            label = "MY_LAYER_TAP";
+            #binding-cells = <2>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <125>;
+            flavor = "tap-preferred";
+            global-quick-tap;
+            bindings = <&mo>, <&kp>;
+        };
     };
 
     keymap {
@@ -41,7 +51,7 @@
             &kp LSHFT &kp  Z  &kp  X    &kp  C  &kp  V  &kp  B  &kp LS(LG(A))                    &none    &kp  N  &kp     M     &kp  COMMA   &kp DOT &kp FSLH &kp RSHFT
             &none     &none   &none     &none   &lt MEDI ESC                                      &kp DEL &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_CLR
                                                 &kp PG_UP  &kp PG_DN               &none &none
-                                        &kp SPACE &lt NUMB TAB  &none                   &none  &lt SYMB RET &lt NUMB BSPC
+                                        &kp SPACE &mlt NUMB TAB  &none                   &none  &mlt SYMB RET &lt NUMB BSPC
                                                             &none                  &none
 			>;
         };
