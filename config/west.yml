@@ -6,8 +6,8 @@ manifest:
       url-base: https://github.com/joelspadin
   projects:
     - name: zmk
-      remote: joelspadin
-      revision: kscan-read-by-port
+      remote: zmkfirmware
+      revision: main
       import: app/west.yml
   self:
     path: config
