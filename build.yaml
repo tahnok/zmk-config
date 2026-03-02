@@ -16,6 +16,6 @@ include:
   - board: nice_nano_v2
     shield: ergodox
   - board: nice_nano_v2
-    shield: corne_left nice_oled
+    shield: corne_left
   - board: nice_nano_v2
-    shield: corne_right nice_oled
+    shield: corne_right
