@@ -126,12 +126,11 @@
 &pro_micro_i2c {
 	status = "okay";
 
-	left_io: mcp230xx@20 {
-		compatible = "microchip,mcp230xx";
+	left_io: mcp23017@20 {
+		compatible = "microchip,mcp23017";
 		status = "okay";
 		gpio-controller;
 		reg = <0x20>;
-		label = "LEFT_IO";
 		#gpio-cells = <2>;
 		ngpios = <16>;
 	};
