@@ -65,9 +65,22 @@
 //                    |     |     |     |   |     |     |     |
                         bindings = <
    &trans     &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &trans   &trans   &trans &trans    &trans &trans 
-   &trans     &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
+   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &trans   &trans   &trans &trans    &trans &trans
+   &trans     &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &tog 4
                                         &trans       &trans       &trans         &trans   &trans   &trans
+                        >;
+                };
+
+                swap_layer {
+                        display-name = "Linux/Win Swap";
+// -----------------------------------------------------------------------------------------
+// Swaps GUI and ALT on thumb keys for Linux/Windows mode.
+// Toggle on/off from Extras layer. All other keys pass through.
+                        bindings = <
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+                        &kp LALT &trans &trans   &trans &trans &kp RGUI
                         >;
                 };
         };
