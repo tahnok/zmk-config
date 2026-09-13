@@ -7,6 +7,47 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/pointing.h>
+#include <dt-bindings/zmk/input_transform.h>
+
+#define MOUSE 5
+#define SCROLL 6
+
+/*
+ * Trackpoint behaviour.
+ *
+ * The pointer hardware itself is set up in corne_right.overlay; everything
+ * that depends on the keymap (which layers exist, which keys must not cancel
+ * the mouse layer) lives here.
+ */
+
+&zip_temp_layer {
+    // Don't pop the mouse layer up mid-word if the trackpoint is nudged
+    // while typing.
+    require-prior-idle-ms = <200>;
+
+    // Keys on the mouse layer that should NOT dismiss it: the three left
+    // thumb keys (clicks) and the inner right thumb key (scroll).
+    excluded-positions = <36 37 38 39>;
+};
+
+&tp_listener {
+    // Moving the trackpoint turns the mouse layer on, and it turns itself
+    // off 800ms after the last movement. Delete this line to get a plain
+    // pointer with no automatic layer.
+    input-processors = <&zip_temp_layer MOUSE 800>;
+
+    // Holding the scroll key makes trackpoint movement scroll instead of
+    // move the cursor. Drop INPUT_TRANSFORM_Y_INVERT for natural scrolling,
+    // and change the scaler divisor to make scrolling slower/faster.
+    scroll {
+        layers = <SCROLL>;
+        input-processors =
+            <&zip_xy_to_scroll_mapper>,
+            <&zip_scroll_transform (INPUT_TRANSFORM_Y_INVERT)>,
+            <&zip_scroll_scaler 1 12>;
+    };
+};
 
 / {
         keymap {
@@ -81,6 +122,39 @@
    &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
    &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
                         &kp LALT &trans &trans   &trans &trans &kp RGUI
+                        >;
+                };
+
+                mouse_layer {
+                        display-name = "Mouse";
+// -----------------------------------------------------------------------------------------
+// Turned on automatically while the trackpoint is moving, off 800ms after it
+// stops. Everything is transparent except the left thumbs (mouse buttons) and
+// the inner right thumb (hold to scroll); pressing any other key dismisses
+// the layer and does its normal thing.
+//
+// |      |     |     |     |     |     |   |     |     |     |     |     |      |
+// |      |     |     |     |     |     |   |     |     |     |     |     |      |
+// |      |     |     |     |     |     |   |     |     |     |     |     |      |
+//                    | MCLK| LCLK| RCLK|   |SCRLL|     |     |
+                        bindings = <
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+                 &mkp MCLK &mkp LCLK &mkp RCLK   &mo SCROLL &trans &trans
+                        >;
+                };
+
+                scroll_layer {
+                        display-name = "Scroll";
+// -----------------------------------------------------------------------------------------
+// Held from the mouse layer. Only exists so the input listener can swap the
+// trackpoint from cursor movement to scrolling; all keys pass through.
+                        bindings = <
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+   &trans &trans &trans &trans &trans &trans   &trans &trans &trans &trans &trans &trans
+                        &trans &trans &trans   &trans &trans &trans
                         >;
                 };
         };
