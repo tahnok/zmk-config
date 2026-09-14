@@ -42,6 +42,9 @@ the last movement. The left thumb keys become middle/left/right click, and
 holding the inner right thumb key turns trackpoint movement into scrolling.
 Any other key dismisses the layer and types normally.
 
-If the pointer moves at right angles to your finger or backwards, adjust the
-`input-processors` line on `&tp_split` in `config/corne_right.overlay` — the
-four rotations are listed in the comment above it.
+If the pointer ever moves backwards along an axis, adjust the
+`input-processors` line on `&tp_split` in `config/corne_right.overlay`.
+
+For troubleshooting there is a `corne_right-nice_nano_v2-usb-logging` build
+in `build.yaml`: flash it and `sudo cat /dev/ttyACM0` to watch the driver
+find and initialise the trackpoint at boot.

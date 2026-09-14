@@ -102,20 +102,16 @@
     device = <&mouse_ps2>;
 
     /*
-     * The trackpoint is mounted rotated 90 degrees, so swap the axes and
-     * invert one of them. Fixing it here means the corrected events are what
-     * gets sent to the central half.
+     * The trackpoint is mounted rotated 90 degrees, so swap the axes. Fixing
+     * it here means the corrected events are what gets sent to the central
+     * half.
      *
-     * If the pointer moves at right angles to your finger, the swap is
-     * missing; if it moves backwards along one axis, flip which invert is
-     * used. The four rotations are:
-     *
-     *   0deg   : (no processor needed)
-     *   90deg  : XY_SWAP | Y_INVERT      <- current
-     *   180deg : X_INVERT | Y_INVERT
-     *   270deg : XY_SWAP | X_INVERT
+     * Verified on the hardware: a plain swap gives the right direction on
+     * both axes. If it ever moves backwards along one axis, add
+     * INPUT_TRANSFORM_X_INVERT or INPUT_TRANSFORM_Y_INVERT (they apply to
+     * the axis *after* the swap).
      */
-    input-processors = <&zip_xy_transform (INPUT_TRANSFORM_XY_SWAP | INPUT_TRANSFORM_Y_INVERT)>;
+    input-processors = <&zip_xy_transform (INPUT_TRANSFORM_XY_SWAP)>;
 };
 
 /*
