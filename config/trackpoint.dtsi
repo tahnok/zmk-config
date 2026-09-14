@@ -1,0 +1,45 @@
+/*
+ * PS/2 trackpoint plumbing shared by both halves of the corne.
+ *
+ * The trackpoint is wired to the RIGHT half, which is a split *peripheral*
+ * (the stock corne shield makes the left half the central). Modern ZMK can
+ * proxy a pointer from a peripheral to the central with a `zmk,input-split`
+ * device, so the right half does not have to become the central the way it
+ * did with the old mouse-PR based driver.
+ *
+ * Both halves include this file so that the shared keymap can reference
+ * `&tp_listener` without breaking the peripheral build.
+ */
+
+#include <input/processors.dtsi>
+#include <dt-bindings/zmk/input_transform.h>
+
+/ {
+    /*
+     * Split pointers are identified by the `reg` value, which is why this
+     * needs a parent node with #address-cells/#size-cells set.
+     *
+     * On the right half this forwards events from the PS/2 driver to the
+     * central; on the left half it behaves as a local input device that
+     * raises whatever the peripheral sent.
+     */
+    split_inputs {
+        #address-cells = <1>;
+        #size-cells = <0>;
+
+        tp_split: tp_split@0 {
+            compatible = "zmk,input-split";
+            reg = <0>;
+        };
+    };
+
+    /*
+     * The listener turns pointer events into HID reports, so it only runs on
+     * the central half, where corne_left.overlay enables it.
+     */
+    tp_listener: tp_listener {
+        compatible = "zmk,input-listener";
+        status = "disabled";
+        device = <&tp_split>;
+    };
+};

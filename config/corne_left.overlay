@@ -1,0 +1,10 @@
+/*
+ * Left half: split central. No trackpoint hardware here, it only needs to
+ * listen to the pointer events proxied from the right half.
+ */
+
+#include "trackpoint.dtsi"
+
+&tp_listener {
+    status = "okay";
+};

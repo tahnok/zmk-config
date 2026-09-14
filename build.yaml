@@ -25,3 +25,10 @@ include:
   - board: nice_nano//zmk
     shield: settings_reset
     artifact-name: settings_reset-nice_nano_v2
+  # Diagnostic build of the right half with logging over USB serial, for
+  # checking that the trackpoint initialises: flash it, then
+  # `sudo cat /dev/ttyACM0` and look for the ps2_uart / mouse init lines.
+  - board: nice_nano//zmk
+    shield: corne_right
+    snippet: zmk-usb-logging
+    artifact-name: corne_right-nice_nano_v2-usb-logging
