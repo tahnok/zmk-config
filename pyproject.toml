@@ -1,0 +1,11 @@
+[project]
+name = "zmk-config-tooling"
+version = "0.1.0"
+description = "Keymap diagram tooling for this ZMK configuration"
+requires-python = ">=3.14"
+dependencies = ["keymap-drawer==0.23.0"]
+
+[tool.uv]
+package = false
+required-version = ">=0.12.21"
+exclude-newer = "7 days"

@@ -1,0 +1,39 @@
+draw_config:
+  n_columns: 1
+  key_w: 60
+  key_h: 56
+  svg_extra_style: |
+    svg.keymap { font-family: "DejaVu Sans", sans-serif; }
+    rect.held { fill: #dbeafe; }
+    rect.trans { fill: #f3f4f6; }
+    text.trans { fill: #9ca3af; }
+parse_config:
+  trans_legend: {t: "▽", type: trans}
+  toggle_label: Toggle
+  raw_binding_map:
+    "&kp LGUI": "⌘ / Win"
+    "&kp RGUI": "⌘ / Win"
+    "&kp LALT": Alt
+    "&kp RALT": RAlt
+    "&kp LCTRL": Ctrl
+    "&kp LSHFT": Shift
+    "&kp RSHFT": Shift
+    "&kp TAB": Tab
+    "&kp BSPC": Backspace
+    "&kp SPACE": Space
+    "&kp RET": Enter
+    "&kp ESC": Esc
+    "&kp DEL": Delete
+    "&kp PG_UP": PgUp
+    "&kp PG_DN": PgDn
+    "&kp LEFT": "←"
+    "&kp DOWN": "↓"
+    "&kp UP": "↑"
+    "&kp RIGHT": "→"
+    "&kp LA(SPACE)": Alt+Space
+    "&bt BT_CLR": BT Clear
+    "&bt BT_SEL 0": BT 1
+    "&bt BT_SEL 1": BT 2
+    "&bt BT_SEL 2": BT 3
+    "&bt BT_SEL 3": BT 4
+    "&bt BT_SEL 4": BT 5
