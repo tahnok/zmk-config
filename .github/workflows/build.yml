@@ -34,7 +34,7 @@ jobs:
           # latest release. Compared by ancestry rather than against main's head,
           # since the diagram workflow pushes a follow-up commit to main.
           latest=true
-          current=$(gh api "repos/$GH_REPO/releases/latest" --jq .target_commitish 2>/dev/null || true)
+          current=$(gh api "repos/$GH_REPO/releases/latest" --jq .target_commitish 2>/dev/null) || current=""
           if [ -n "$current" ]; then
             status=$(gh api "repos/$GH_REPO/compare/${current}...${GITHUB_SHA}" --jq .status)
             case "$status" in
