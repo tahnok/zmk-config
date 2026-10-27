@@ -56,7 +56,9 @@ To build and flash:
 
 1. Push a configuration change, or run **Build ZMK firmware** manually from the
    repository's GitHub Actions tab.
-2. Download the firmware artifacts from the successful run.
+2. Download the `.uf2` files from the
+   [latest release](../../releases/latest). Each successful build of `main`
+   publishes a new release; pull request builds only upload artifacts.
 3. Put each Corne half into its UF2 bootloader and copy the corresponding
    left/right `.uf2` file onto its mounted drive.
 

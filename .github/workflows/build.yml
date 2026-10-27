@@ -4,3 +4,53 @@ on: [push, pull_request, workflow_dispatch]
 jobs:
   build:
     uses: zmkfirmware/zmk/.github/workflows/build-user-config.yml@edf5c0814fd3ea202e43aad2d68fd32e882a518c # v0.3.0
+
+  # Publish every main build as a GitHub Release so the latest firmware is at
+  # https://github.com/<owner>/<repo>/releases/latest
+  release:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    # Publish one release at a time so concurrent builds can't race on "latest".
+    concurrency:
+      group: firmware-release
+      cancel-in-progress: false
+    permissions:
+      contents: write
+    steps:
+      - name: Download firmware
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: firmware
+          path: firmware
+      - name: Create or update release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          tag="build-${GITHUB_RUN_NUMBER}"
+
+          # Only mark this release latest if it's at least as new as the current
+          # latest release. Compared by ancestry rather than against main's head,
+          # since the diagram workflow pushes a follow-up commit to main.
+          latest=true
+          current=$(gh api "repos/$GH_REPO/releases/latest" --jq .target_commitish 2>/dev/null || true)
+          if [ -n "$current" ]; then
+            status=$(gh api "repos/$GH_REPO/compare/${current}...${GITHUB_SHA}" --jq .status)
+            case "$status" in
+              ahead|identical) ;;
+              *) latest=false ;;
+            esac
+          fi
+
+          # Reruns keep the same run number, so update the release if it exists.
+          if gh release view "$tag" >/dev/null 2>&1; then
+            gh release upload "$tag" firmware/*.uf2 --clobber
+            gh release edit "$tag" --latest="$latest"
+          else
+            gh release create "$tag" firmware/*.uf2 \
+              --target "$GITHUB_SHA" \
+              --title "Firmware $(date -u +%Y-%m-%d) (${GITHUB_SHA::7})" \
+              --notes "Built from ${GITHUB_SHA} by ${GITHUB_SERVER_URL}/${GH_REPO}/actions/runs/${GITHUB_RUN_ID}" \
+              --latest="$latest"
+          fi
